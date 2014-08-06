@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../favicon.ico"> 
+    <link rel="shortcut icon" href="<?php echo image_asset_url('favicon.ico')?>">  
 	
     <?php echo css_asset('reset.css'); ?>
 	<?php echo css_asset('style.css'); ?>
@@ -29,6 +29,8 @@
 	<script type="text/javascript" src="<?php echo other_asset_url('docsupport/chosen.jquery.js'); ?>"></script>
 	<script type="text/javascript" src="<?php echo other_asset_url('docsupport/prism.js'); ?>"></script>
 
+	<!--<script type="text/javascript" src="<?php echo other_asset_url('js/close_browser.js'); ?>"></script>-->
+	
 	<script type="text/javascript">
 
 	$(function(){
@@ -55,7 +57,18 @@
 	</script>
 	<script>
     $(function(){
-        $(".select-menu > select > option:eq(0)").attr("selected","selected");
+		var selectmenu_txt = $("#TypeID").find("option:selected").text();
+			$("#TypeID").prev("span").text(selectmenu_txt);
+			selectmenu_txt = $("#SubTypeID").find("option:selected").text();
+			$("#SubTypeID").prev("span").text(selectmenu_txt);
+			selectmenu_txt = $("#DepartmentID").find("option:selected").text();
+			$("#DepartmentID").prev("span").text(selectmenu_txt);
+			selectmenu_txt = $("#UserId").find("option:selected").text();
+			$("#UserId").prev("span").text(selectmenu_txt);
+			selectmenu_txt = $("#MoreTypeID").find("option:selected").text();
+			$("#MoreTypeID").prev("span").text(selectmenu_txt);
+
+        //$(".select-menu > select > option:eq(0)").attr("selected","selected");
         $(".select-menu > select").live("change",function(){
             var selectmenu_txt = $(this).find("option:selected").text();
             $(this).prev("span").text(selectmenu_txt);
@@ -64,6 +77,10 @@
     </script>
 </head>
 <body>
+<?php $n="";$e="";?>
+<div id>
+
+
 <!--<form action="<?=$_SERVER["PHP_SELF"];?>" method="post" name="share">-->
 <form action="<?php echo base_url()."rss/find";?>" method="post" name="share" id="search">
     <div class="container">
@@ -134,51 +151,65 @@
                                   <label >หมวดหมู่ข่าว</label>
 								  <span class="select-menu">
                                   <span>เลือกหมวดหมู่ข่าว</span>
-                                    <select name="TypeID" id="TypeID" class="form-control">
-                                        <option selected="selected" value="0">เลือกหมวดหมู่ข่าว</option>
-											 <?php foreach ($subtype as $item2){;
-											  if ( isset( $_POST['TypeID'] ) and ( $_POST['TypeID'] == $item2->NT02_TypeID ) ) {
-												$selectedTypeID = ' Selected ';
-											  } else {
-												$selectedTypeID = '';
-											  }
-											?>
-										 <option value="<?php echo $item2->NT02_TypeID; ?>" <?php echo $selectedTypeID; ?> ><?php echo $item2->TypeNews; ?></option>
+                                  <select name="TypeID" id="TypeID" class="form-control">
+                                  <option value="">เลือกหมวดหมู่ข่าว</option>
+								  <?php foreach ($newstype as $item2){;
+								  if ( isset( $_POST['TypeID'] ) and ( $_POST['TypeID'] == $item2->NT02_TypeID ) ) {
+									$selectedTypeID = ' Selected ';
+								  } else {
+									$selectedTypeID = '';
+								  }
+								  ?>
+								  <option value="<?php echo $item2->NT02_TypeID; ?>" <?php echo $selectedTypeID; ?> ><?php echo $item2->NT02_TypeName; ?></option>
 								  <?php };?>
                                     </select>
                                     </span> 
-								  <!--<span class="select-menu">
-                                  <select name="TypeID" id="TypeID" class="form-control" placeholder="">
-								   <span><option value="0"> เลือกหมวดหมู่ข่าว </option> </span>
-								 
-								  </select>
-								  </span>-->
                               </div>
-							  <!--<div class="col-lg-6">
-                                  <label >หมวดหมู่ข่าวย่อย</label>
-                                  <select name="SubTypeID" id="SubTypeID" class="form-control" placeholder="">
-									<option value="0"> เลือกหมวดหมู่ข่าวย่อย</option>
-								  </select>
-                              </div>-->
                               <div class="col-lg-6">
                                   <label >หมวดหมู่ข่าวย่อย</label>
 								  <span class="select-menu">
 								  <span>เลือกหมวดหมู่ข่าวย่อย</span>
                                   <select name="SubTypeID" id="SubTypeID" class="form-control">
-								  <option selected="selected" value="0"> เลือกหมวดหมู่ข่าวย่อย</option>
-								  <?php foreach ($query3 as $item3){;
+								  <option value=""> เลือกหมวดหมู่ข่าวย่อย</option>
+								  <?php foreach ($subtype as $item3){;
 								  if ( isset( $_POST['SubTypeID'] ) and ( $_POST['SubTypeID'] == $item3->NT03_SubTypeID ) ) {
 									$selectedTypeID = ' Selected ';
 								  } else {
 									$selectedTypeID = '';
 								  }
 								?>
-								<option value="<?php echo $item3->NT03_SubTypeID; ?>" <?php echo $selectedTypeID; ?> ><?php echo $item3->SubType; ?></option>
+								<option value="<?php echo $item3->NT03_SubTypeID; ?>" <?php echo $selectedTypeID; ?> ><?php echo $item3->NT03_SubTypeName; ?></option>
 								  <?php };?>
 								  </select>
 								  </span>
                               </div>
                             </div>
+
+                            <div class="row">
+                           		<div class="col-lg-6">
+                                	<label >หมวดหมู่ข่าวเพิ่มเติม</label>
+                                  	<span class="select-menu">
+								  		<span>เลือกหมวดหมู่ข่าวเพิ่มเติ่ม</span>
+                                  		<select name="MoreTypeID" id="MoreTypeID" class="form-control">
+								  			<option value=""> เลือกหมวดหมู่ข่าวเพิ่มเติม</option>
+								  			<?php foreach ($moretype as $item_moretype){;
+								  			if ( isset( $_POST['MoreTypeID'] ) and ( $_POST['MoreTypeID'] == $item_moretype->NT06_MoreTypeID ) ) 
+								  			{
+												$selectedSubTypeID = ' Selected ';
+								  			} 
+								  			else 
+								  			{
+												$selectedSubTypeID = '';
+								  			}
+											?>
+											<option value="<?php echo $item_moretype->NT06_MoreTypeID; ?>" <?php echo $selectedSubTypeID; ?> ><?php echo $item_moretype->NT06_MoreTypeName; ?></option>
+								  			<?php 
+								  			}
+								  			;?>
+								  		</select>
+								  	</span>
+                            	</div>
+                           	</div> 
 
                          <div class="row">
                               <div class="col-lg-6">
@@ -186,8 +217,9 @@
 								  <span class="select-menu">
 								  <span>เลือกหน่วยงาน</span>
                                   <select name="DepartmentID" id="DepartmentID" class="form-control" placeholder="">
-								  <option value="0"> เลือกหน่วยงาน</option>
-								  <?php foreach ($query4 as $item4){;
+								  <!--<option value="0"> เลือกหน่วยงาน</option>-->
+								  <option value=""> เลือกหน่วยงาน</option>
+								  <?php foreach ($department as $item4){;
 								  if ( isset( $_POST['DepartmentID'] ) and ( $_POST['DepartmentID'] == $item4->SC07_DepartmentId ) ) {
 									$selectedTypeID = ' Selected ';
 								  } else {
@@ -204,8 +236,9 @@
 								  <span class="select-menu">
 								  <span>เลือกนักข่าว</span>
                                   <select name="UserId" id="UserId" class="chosen-select" placeholder="" >
-								  <option value="0"> เลือกนักข่าว</option>
-								  <?php foreach ($query10 as $item10){;
+								  <!--<option value="0"> เลือกนักข่าว</option>-->
+								  <option value=""> เลือกนักข่าว</option>
+								  <?php foreach ($reporter as $item10){;
 								  if ( isset( $_POST['UserId'] ) and ( $_POST['UserId'] == $item10->SC03_UserId ) ) {
 									$selectedTypeID = ' Selected ';
 								  } else {
@@ -220,7 +253,7 @@
                           </div>
 						  
                          <div class="col-lg-12" style="text-align: center;">
-                            <input class="bt" type="submit" value="ค้นหาข่าว" name="share" style="width:18%;padding: 4px;">
+                            <input class="bt" type="submit" value="ค้นหาข่าว" name="share" style="width:18%;padding: 4px;cursor:pointer;">
                          </div>
                       
                     </div>
@@ -236,99 +269,98 @@
                             <input type="checkbox" id="other" name="other" class="chk" value="3">อื่นๆ
                         </div>
                         <div class="col-lg-left" style="text-align: right;">
-                           <img src="<?php echo image_asset_url('rss_btn.png')?>" style="margin-top:-30px"  class="icon"  id="makeRss">
+                           <img data-other-src="<?php echo image_asset_url('rss_btn_click.png')?>" src="<?php echo image_asset_url('rss_btn.png')?>" style="margin-top:-30px;cursor:pointer;"  class="icon"  id="makeRss">
                            <!--<a class="icon" href="#">--><img src="<?php echo image_asset_url('rss.png')?>" style="margin: -10px 10px 0;"><!--</a>-->
-                          <input type="text" class="form-control" id="InputRss" placeholder="" style="margin-top: -30px;
+                          <input type="text" value= "" class="form-control" id="InputRss" placeholder="" style="margin-top: -30px;
     padding: 20px 18px 0;
     vertical-align: baseline;width:50%">
                         </div>
                    </div>
 				   </form>
+                   
                    <div class="row">
-                        <div class="header-table">
-                          <p class="col-1" style="width: 20%;float: left; ">วันที่ข่าว</p>
-                          <p class="col-2" style="width: 60%;float: left; ">หัวข้อข่าว</p>
-                          <p class="col-3" style="width: 20%;float: left; ">Icon ไฟล์แนบ</p>
-                        </div>
-						<?php 
-						$count = 1;
-						$i = 0;
-						//var_dump($query5);
-						//echo $query5[0];
-						foreach ($query->result() as $item){;
-							$id = $item->NewsID;
-							$title = $item->Title;
-							$row = $item->RowNumber;
-							/*$pic_id = $item->pic_id;
-							$voice_id = $item->voice_id;
-							$other_id = $item->other_id;*/
-							//if($query5[$i])
-								$vdo_id = $query5[$i];
-							/*else
-								echo $vdo_id = "";*/
-							//if($query6[$i])
-								$pic_id = $query6[$i];
-							/*else
-								$pic_id = "";*/
-							//if($query7[$i])
-								$voice_id = $query7[$i];
-							/*else
-								$voice_id = "";*/
-							//if($query8[$i])
-								$other_id = $query8[$i];
-							/*else
-								$other_id = "";*/
-							$date = $item->Date;
-							$d = date("d-m-Y",strtotime($date));
-							$t = date("H:i:s",strtotime($date));
-							$c = "";
-							if($count%2 != 0){
-								$c = "odd";
-							}
-							else if($count%2 == 0){
-								$c = "event";
-							}
-						?>
-						<div class="<?php echo $c;?>">
-                          <p class="col-1" style="width: 5%;float: left;text-align:center;"><?php echo $row;?></p>
-                          <p class="col-2" style="width: 15%;float: left; "><?php echo $d."<br/>&nbsp;".$t;?></p>
-                          <p class="col-3" style="width: 60%;float: left; "><a target ="_blank" href="<?php echo base_url()?>rss/detail?id=<?php echo $id;?>"><?php echo substr($title,0,550);?></a></p>
-                          <p class="col-4" style="width: 20%;float: left;  text-align: center;">
-						  
-						  <?php if($vdo_id == "0"){?>
-                            <img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;">
-						  <?php }else{?>
-							<img src="<?php echo image_asset_url('icon/vdo.png')?>" style="margin: -10px 10px 0;">
-						  <?php }?>
-						  <?php if($pic_id == "0"){?>
-                            <img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;">
-						  <?php }else{?>
-							<img src="<?php echo image_asset_url('icon/pic.png')?>" style="margin: -10px 10px 0;">
-						  <?php }?>
-						  <?php if($voice_id == "0"){?>
-                            <img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;">
-						  <?php }else{?>
-							<img src="<?php echo image_asset_url('icon/voice.png')?>" style="margin: -10px 10px 0;">
-						  <?php }?>
-                          <?php if($other_id == "0"){?>
-                            <img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;">
-						  <?php }else{?>
-							<img src="<?php echo image_asset_url('icon/doc.png')?>" style="margin: -10px 10px 0;">
-						  <?php }?>  
-                          </p>
-                        </div>
-							<?php
+				   		<table style="width: 100%;">
+                   			<tr class="header-table">
+                   				<td style="width: 5%;float: left; "><p>ลำดับ</p></td>
+                   				<td style="width: 15%;float: left; "><p>วันที่ข่าว</p></td>
+                   				<td style="width: 40%;float: left; "><p>หัวข้อข่าว</p></td>
+                   				<td style="width: 20%;float: left; "><p>ผู้สื่อข่าว</p></td>
+                   				<td style="width: 20%;float: left; "><p>Icon ไฟล์แนบ</p></td>
+                   			</tr>
+                   			<?php 
+							$count = 1;
+							$i = 0;
+							foreach ($query->result() as $item){;
+								$id = $item->NewsID;
+								//$title = $item->Title;
+								$title = $item->Title;
+								$reporter = $item->Reporter;
+								if($reporter == "")
+								{
+									$reporter = "ไม่มีผู้สื่อข่าว";
+								}
+								$row = $item->RowNumber;
+								$vdo_id = $video_status[$i];
+								$pic_id = $picture_status[$i];
+								$voice_id = $voice_status[$i];
+								$other_id = $other_status[$i];
+								$date = $item->Date;
+								$d = date("d-m-Y",strtotime($date));
+								$t = date("H:i:s",strtotime($date));
+								$c = "";
+								if($count%2 != 0){
+									$c = "odd";
+								}
+								else if($count%2 == 0){
+									$c = "event";
+								}
+							?>
+                   			<tr class="<?php echo $c ;?>">
+                   				<td style="width: 5%;float: left;text-align: center; "><p><?php echo $row;?></p></td>
+                   				<td style="width: 15%;float: left;text-align: center; "><p><?php echo $d."<br/>&nbsp;".$t;?></p></td>
+                   				<td style="width: 40%;float: left; "><p><a target ="_blank" href="<?php echo base_url()?>rss/detail?id=<?php echo $id;?>"><?php echo $title;?></a></p></td>
+                   				<td style="width: 20%;float: left; "><p><?php echo $reporter; ?></p></td>
+                   				<td style="width: 20%;float: left;text-align: center; "><p>
+                   					<?php if($vdo_id == "0"){?>
+                            			<img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;" alt="วีดีโอ" title="วีดีโอ">
+								  	<?php }else{?>
+										<img src="<?php echo image_asset_url('icon/vdo.png')?>" style="margin: -10px 10px 0;" alt="วีดีโอ" title="วีดีโอ">
+								  	<?php }?>
+                   			
+                   					<?php if($pic_id == "0"){?>
+                           				<img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;" alt="รูปภาพ" title="รูปภาพ">
+						  			<?php }else{?>
+										<img src="<?php echo image_asset_url('icon/pic.png')?>" style="margin: -10px 10px 0;" alt="รูปภาพ" title="รูปภาพ">
+						  			<?php }?>
+                   				
+                   					<?php if($voice_id == "0"){?>
+                            			<img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;" alt="เสียง" title="เสียง">
+						  			<?php }else{?>
+										<img src="<?php echo image_asset_url('icon/voice.png')?>" style="margin: -10px 10px 0;" alt="เสียง" title="เสียง">
+						  			<?php }?>
+                   				
+                   					<?php if($other_id == "0"){?>
+                            			<img src="<?php echo image_asset_url('icon/null.png')?>" style="margin: -10px 10px 0;" alt="ไฟล์อื่นๆ" title="ไฟล์อื่นๆ">
+						  			<?php }else{?>
+										<img src="<?php echo image_asset_url('icon/doc.png')?>" style="margin: -10px 10px 0;" alt="ไฟล์อื่นๆ" title="ไฟล์อื่นๆ">
+						  			<?php }?></p>
+                   				</td>
+                   			</tr>
+                   			<?php
 								$i++;
 								$count++;
-							}?>
+							?>	
+                   			<?php }?>
+                   		</table>
+
                         <div class="footer-table">
 						  <?php
-							//echo $query9;
+							//echo $rows;
 							//echo $count;
 							if($count > "1")
 							{
 						  ?>
-                          <p style="width: 70%;float: left;margin-top: 20px;">ทั้งหมด: <?php echo $query9; ?> รายการ (<?php echo ceil($query9/20) ?> หน้า)</p>   <p style="width: 30%;float: left;margin-top: 20px;text-align: right;">
+                          <p style="width: 70%;float: left;margin-top: 20px;">ทั้งหมด: <?php echo $rows; ?> รายการ (<?php echo ceil($rows/20) ?> หน้า)</p>   <p style="width: 30%;float: left;margin-top: 20px;text-align: right;">
 						  <!--<?php 
 							echo $pagination;
 						  ?>-->
@@ -342,7 +374,7 @@
 									echo 2;
 								else
 									echo ceil(($this->uri->segment(3)/20)+1);
-								?>" onKeyUp="if(this.value*1!=this.value) this.value='' ;">/<?php echo ceil($query9/20) ;?>
+								?>" onKeyUp="if(this.value*1!=this.value) this.value='' ;">/<?php echo ceil($rows/20) ;?>
 								<!--<img src="<?php echo image_asset_url('table/next.png')?>" style="margin: -5px 10px 0;"></a>-->
 							</span>
                             <span style="margin-top: 10px;">
@@ -350,20 +382,20 @@
 							<option value="1" <?php if ($this->uri->segment(3)/20 == 0)echo "selected" ;?>>1</option>
 							<option value="2" <?php if ($this->uri->segment(3)/20 == 1)echo "selected" ;?>>2</option>
 							<?php
-								$total = ceil($query9/20);
+								$total = ceil($rows/20);
 								for($i = 3 ; $i <= $total ; $i++ )
 								{
 									$s = $i-1;
 							?>
-                                <option value="<?php echo $i ;?>" <?php if ($this->uri->segment(3)/20 == $s ) echo "selected";?>><?php echo $i ;?></option>
+                                <option value="<?php echo $i ;?>" <?php if (ceil($this->uri->segment(3)/20) == $s ) echo "selected";?>><?php echo $i;?></option>
                      
 							<?php 
 								}
 							?>
-                            </select> / <?php echo ceil($query9/20) ;?></span>
+                            </select> / <?php echo ceil($rows/20) ;?></span>
 							<?php
 								$n = $this->uri->segment(3)+20;
-								$e = $query9-20;
+								$e = $rows-20;
 							?>
 							<!--<a href="#" id="go"><img src="<?php echo image_asset_url('table/go.png')?>" style="margin: -5px 10px 0;"></a>-->
                             <a href="#" onclick="nextPage()"><img src="<?php echo image_asset_url('table/next.png')?>" style="margin: -5px 10px 0;"></a>
@@ -386,18 +418,14 @@
     </div>
 </form>
 </body>
-
-<!--<script type="text/javascript">
-$(document).ready(function(){
-	$('#makeRss').click(function(){
-		var attrfile = ""
-		$('.chk:checked').each(function () {
-			  attrfile += $(this).attr("name");
-		});
-        $("#InputRss").val(attrfile);
-	});
-})
-</script>-->
+<script type="text/javascript">
+$('img').bind('mouseenter mouseleave', function() {
+    $(this).attr({
+        src: $(this).attr('data-other-src') 
+        , 'data-other-src': $(this).attr('src') 
+    })
+});
+</script>
 <script type="text/javascript">
 $(function(){
 	 $("#makeRss").click(function(){
@@ -405,7 +433,8 @@ $(function(){
 		 //alert(url);
 		 var dataSet={ search: $("input#search").val(), start_date: $("input#fromdate").val(), end_date: $("input#todate").val() 
 		 ,type: $("#TypeID").val(),subtype: $("#SubTypeID").val(),department: $("#DepartmentID").val(),reporter: $("#UserId").val() 	
-		 ,video: $("#vdo").is(":checked"),sound: $("#sound").is(":checked"),image: $("#image").is(":checked"),other: $("#other").is(":checked")};
+		 ,video: $("#vdo").is(":checked"),sound: $("#sound").is(":checked"),image: $("#image").is(":checked"),other: $("#other").is(":checked")
+		 ,moretype: $("#MoreTypeID").val()};
 		 $.post(url,dataSet,function(data){
 			//alert(data);
 			var url = "<?php echo base_url()?>rss/view_rss/"+data;
@@ -414,79 +443,127 @@ $(function(){
 		 //alert(dataSet.search+dataSet.start_date+dataSet.end_date+dataSet.type+dataSet.subtype+" "+dataSet.department+" "+dataSet.reporter);
 	 });
 });
-/*$(function(){
-	 $("#go").click(function(){
-		 var page = parseInt($("input#link").val());
-		 //alert(page);
-		 if(page == 1)
-		 {
-			var link="<?php echo base_url()?>rss/find/";
-			//alert(link);
-			window.location.replace(link);
-		 }
-		 else if(page == 2)
-		 {
-			var link="<?php echo base_url()?>rss/find/20";
-			//alert(link);
-			window.location.replace(link);
-		 }
-		 else if(page > 2)
-		 {
-			var link="<?php echo base_url()?>rss/find/"+(page-1)*20;
-			//alert(link);
-			window.location.replace(link);
-		 }
-		 else
-		 {
-			var link="<?php echo base_url()?>rss/find/";
-			//alert(link);
-			window.location.replace(link);
-		 }
-		 //alert(dataSet.search+dataSet.start_date+dataSet.end_date+dataSet.type+dataSet.subtype+" "+dataSet.department+" "+dataSet.reporter);
-	 });
-});*/
 </script>
 <script type="text/javascript">
 $('#TypeID').change(function(){
     var type_id = $('#TypeID').val();
-    if (type_id != ""){
-			if (type_id == "0"){
+    if (type_id != "")
+    {
+		var post_url = "<?php echo base_url();?>"+"rss/get_subtype/" + type_id;
+		$.ajax({
+			type: "POST",
+			url: post_url,
+			dataType :'json',
+			success: function(subtype) //we're calling the response json array
+			{
 				$('#SubTypeID').empty();
 				var opt = $('<option />'); 
-                      opt.val('0');
-                      opt.text('หมวดหมู่ข่าวย่อย');
+				opt.val(null);
+				var sub = opt.val(null);
+				opt.text(" - ทั้งหมด - ");
 				$('#SubTypeID').append(opt);
-			}else{
-			var post_url = "<?php echo base_url();?>"+"rss/get_subtype/" + type_id;
-			//alert(post_url);
-			$.ajax({
-				 type: "POST",
-				 url: post_url,
-				 dataType :'json',
-				 success: function(subtype) //we're calling the response json array
-				  {
-				
-					$('#SubTypeID').empty();
-					 var opt = $('<option />'); 
-						  opt.val(0);
-						  opt.text(" - ทั้งหมด - ");
-						  $('#SubTypeID').append(opt);
-					   $.each(subtype,function(index,val) 
-					   {
-					   /* var opt = $('<option />'); // here we're creating a new select option for each group
-						  opt.val(id);
-						  opt.text(city);
-						  $('#SubTypeID').append(opt); */
-						  var opt = $('<option />'); 
-						  opt.val(val.NT03_SubTypeID);
-						  opt.text(val.SubType);
-						  $('#SubTypeID').append(opt);
-						 
-					});
-				   } //end success
-			 });} //end AJAX
-    } else {
-       $('#SubTypeID').empty();
+				$.each(subtype,function(index,val) 
+				{
+					var opt = $('<option />'); 
+				  	opt.val(val.NT03_SubTypeID);
+				  	opt.text(val.NT03_SubTypeName);
+				  	$('#SubTypeID').append(opt); 
+
+					var sub_id = $('#SubTypeID').val();
+				    if (sub_id != "")
+				    {
+						var post_url = "<?php echo base_url();?>"+"rss/get_moretype/" + sub_id;
+						$.ajax({
+							type: "POST",
+							url: post_url,
+							dataType :'json',
+							success: function(moretype) //we're calling the response json array
+							{
+								$('#MoreTypeID').empty();
+								var opt = $('<option />'); 
+								opt.val(null);
+								opt.text(" - ทั้งหมด - ");
+								$('#MoreTypeID').append(opt);
+								$.each(moretype,function(index,val) 
+								{
+									var opt = $('<option />'); 
+								  	opt.val(val.NT06_MoreTypeID);
+								  	opt.text(val.NT06_MoreTypeName);
+								  	$('#MoreTypeID').append(opt); 
+								});
+								var selectmenu_txt = $("#MoreTypeID").find("option:selected").text();
+								$("#MoreTypeID").prev("span").text(selectmenu_txt);
+							} //end success
+						}); //end AJAX*/
+				    }else	{
+				       	$('#MoreTypeID').empty();
+				       	var opt = $('<option />'); 
+				        opt.val(null);
+				        opt.text('เลือกหมวดหมู่ข่าวเพิ่มเติม');
+						$('#MoreTypeID').append(opt);
+						$("#MoreTypeID").prev("span").text('เลือกหมวดหมู่ข่าวเพิ่มเติม');
+						
+				    }//end if
+									  	
+				});
+				var selectmenu_txt = $("#SubTypeID").find("option:selected").text();
+				$("#SubTypeID").prev("span").text(selectmenu_txt);
+			} //end success
+		}); //end AJAX
+    }else	{
+       	$('#SubTypeID').empty();
+       	var opt = $('<option />'); 
+        opt.val(null);
+        opt.text('เลือกหมวดหมู่ข่าวย่อย');
+		$('#SubTypeID').append(opt);
+		$("#SubTypeID").prev("span").text('เลือกหมวดหมู่ข่าวย่อย');
+
+		$('#MoreTypeID').empty();
+       	var opt = $('<option />'); 
+        opt.val(null);
+        opt.text('เลือกหมวดหมู่ข่าวเพิ่มเติม');
+		$('#MoreTypeID').append(opt);
+		$("#MoreTypeID").prev("span").text('เลือกหมวดหมู่ข่าวเพิ่มเติม');
+		
+    }//end if
+}); //end change 
+</script>
+
+<script type="text/javascript">
+$('#SubTypeID').change(function(){
+    var sub_id = $('#SubTypeID').val();
+    if (sub_id != "")
+    {
+		var post_url = "<?php echo base_url();?>"+"rss/get_moretype/" + sub_id;
+		$.ajax({
+			type: "POST",
+			url: post_url,
+			dataType :'json',
+			success: function(moretype) //we're calling the response json array
+			{
+				$('#MoreTypeID').empty();
+				var opt = $('<option />'); 
+				opt.val(null);
+				opt.text(" - ทั้งหมด - ");
+				$('#MoreTypeID').append(opt);
+				$.each(moretype,function(index,val) 
+				{
+					var opt = $('<option />'); 
+				  	opt.val(val.NT06_MoreTypeID);
+				  	opt.text(val.NT06_MoreTypeName);
+				  	$('#MoreTypeID').append(opt); 
+				});
+				var selectmenu_txt = $("#MoreTypeID").find("option:selected").text();
+				$("#MoreTypeID").prev("span").text(selectmenu_txt);
+			} //end success
+		}); //end AJAX*/
+    }else	{
+       	$('#MoreTypeID').empty();
+       	var opt = $('<option />'); 
+        opt.val(null);
+        opt.text('เลือกหมวดหมู่ข่าวเพิ่มเติม');
+		$('#MoreTypeID').append(opt);
+		$("#MoreTypeID").prev("span").text('เลือกหมวดหมู่ข่าวเพิ่มเติม');
 		
     }//end if
 }); //end change 
@@ -496,95 +573,78 @@ var url = "<?php echo base_url()."/rss"?>";
 $('#DepartmentID').change(function(){
     var dep_id = $('#DepartmentID').val();
     if (dep_id != ""){
-		if (dep_id == "0"){
-				$('#UserId').empty();
-				var opt = $('<option />'); 
-                      opt.val('0');
-                      opt.text('เลือกนักข่าว');
-				$('#UserId').append(opt);
-			}else{
         var post_url = "<?php echo base_url();?>"+ "rss/get_user/" + dep_id;
         $.ajax({
-             type: "POST",
-             url: post_url,
-			 dataType :'json',
-             success: function(UserId) //we're calling the response json array 'cities'
-             {
-			
-				   $('#UserId').empty();
-					var opt = $('<option />'); 
-						  opt.val(0);
-						  opt.text(" - ทั้งหมด - ");
-						  $('#UserId').append(opt);
-                   $.each(UserId,function(index,val) 
-                   {
-                   /* var opt = $('<option />'); // here we're creating a new select option for each group
-                      opt.val(id);
-                      opt.text(city);
-                      $('#SubTypeID').append(opt); */
-					  var opt = $('<option />'); 
-                      opt.val(val.SC03_UserId);
-                      opt.text(val.Name);
-                      $('#UserId').append(opt);
+            type: "POST",
+            url: post_url,
+			dataType :'json',
+            success: function(UserId) //we're calling the response json array 'cities'
+            {
+			   	$('#UserId').empty();
+				var opt = $('<option />'); 
+					opt.val(null);
+					opt.text(" - ทั้งหมด - ");
+					$('#UserId').append(opt);
+               	$.each(UserId,function(index,val) 
+               	{
+				 	var opt = $('<option />'); 
+                  	opt.val(val.SC03_UserId);
+                  	opt.text(val.Name);
+                  	$('#UserId').append(opt);
                 });
-               } //end success
-         })}; //end AJAX
+				var selectmenu_txt = $("#UserId").find("option:selected").text();
+				$("#UserId").prev("span").text(selectmenu_txt);
+            }
+         });
     } else {
         $('#UserId').empty();
-    }//end if
-}); //end change
+		var opt = $('<option />'); 
+        opt.val(null);
+        opt.text('เลือกนักข่าว');
+		$('#UserId').append(opt);
+		$("#UserId").prev("span").text('เลือกนักข่าว');
+    }
+});
+</script>
+<script type="text/javascript">
 function jumpPage(){
 	var page = parseInt($("#jump").val());
 	//alert(page);
 	if(page == 1)
 	{
-		$("#search").attr("action","<?php echo base_url()."rss/find/" ?>");
+		$("#search").attr("action","<?php echo base_url()."rss/find/" ;?>");
 		$("#search").submit();
 	}
 	else if(page == 2)
 	{
-		$("#search").attr("action","<?php echo base_url()."rss/find/20" ?>");
+		$("#search").attr("action","<?php echo base_url()."rss/find/20" ;?>");
 		$("#search").submit();
 	}
 	else if(page > 2)
 	{
 		var get_page = (page-1)*20;
-		$("#search").attr("action","<?php echo base_url()."rss/find/" ?>"+get_page);
+		$("#search").attr("action","<?php echo base_url()."rss/find/" ;?>"+get_page);
 		$("#search").submit();
 	}
 	else
 	{
-		$("#search").attr("action","<?php echo base_url()."rss/find/" ?>");
+		$("#search").attr("action","<?php echo base_url()."rss/find/" ;?>");
 		$("#search").submit();
 	}
-	/*$("#search").attr("action","<?php echo base_url()."rss/find/" ?>");
-	$("#search").submit();*/
 }
 function prePage(){
-	$("#search").attr("action","<?php echo base_url()."rss/find/" ?>");
+	$("#search").attr("action","<?php echo base_url()."rss/find/" ;?>");
 	$("#search").submit();
 }
 function nextPage(){
-	$("#search").attr("action","<?php echo base_url()."rss/find/".$n ?>");
+	$("#search").attr("action","<?php echo base_url()."rss/find/".$n ;?>");
 	$("#search").submit();
 }
 function endPage(){
-	$("#search").attr("action","<?php echo base_url()."rss/find/".$e ?>");
+	$("#search").attr("action","<?php echo base_url()."rss/find/".$e ;?>");
 	$("#search").submit();
 }
 </script>
-<!--<script type="text/javascript">
-    var config = {
-      '.chosen-select'           : {},
-      '.chosen-select-deselect'  : {allow_single_deselect:true},
-      '.chosen-select-no-single' : {disable_search_threshold:10},
-      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-      '.chosen-select-width'     : {width:"95%"}
-    }
-    for (var selector in config) {
-      $(selector).live('chosen',(config[selector]));
-    }
-</script>-->
 <?php
 }
 else

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../favicon.ico"> 
+    <link rel="shortcut icon" href="<?php echo image_asset_url('favicon.ico')?>"> 
 
   <?php echo css_asset('reset.css'); ?>
 	<?php echo css_asset('style.css'); ?>
@@ -74,15 +74,15 @@
             <div class="content">
                 <div id="detail-form">
 
-					<?php foreach ($query as $item){;
-						$id = $item->NewsID;
-						$title = $item->Title;
-						$detail = $item->Detail;
-						$date = $item->Date;
-						$views = $item->Views;
-						$reporter = $item->Reporter;
-						$rewrite = $item->Rewrite;
-						$department = $item->Department;
+					<?php foreach ($detail as $item_detail){;
+						$id = $item_detail->NewsID;
+						$title = $item_detail->Title;
+						$detail = $item_detail->Detail;
+						$date = $item_detail->Date;
+						$views = $item_detail->Views;
+						$reporter = $item_detail->Reporter;
+						$rewrite = $item_detail->Rewrite;
+						$department = $item_detail->Department;
 						$d = date("d",strtotime($date));
 						$m = date("m",strtotime($date));
 						$y = date("Y",strtotime($date));
@@ -96,12 +96,12 @@
 						$voice_status = "";
 						$picture_status = "";
 						$other_status = "";
-						foreach ($status as $item2)
+						foreach ($status as $item_status)
 						{
-							$vdo_status = $item2->Main_StatusVDO;
-							$voice_status = $item2->Main_StatusVoice;
-							$picture_status = $item2->Main_StatusPicture;
-							$other_status = $item2->Main_StatusOther;
+							$vdo_status = $item_status->Main_StatusVDO;
+							$voice_status = $item_status->Main_StatusVoice;
+							$picture_status = $item_status->Main_StatusPicture;
+							$other_status = $item_status->Main_StatusOther;
 						}
 						?>
                           <div class="row">
@@ -111,9 +111,9 @@
 								  {
 								  ?>	
                                   <div class="vdo">
-								  <?php foreach ($query3 as $item3){;
-									$video = $item3->url;
-									$video_extension = $item3->NT10_Extension;
+								  <?php foreach ($get_video as $item_video){;
+									$video = $item_video->url;
+									$video_extension = $item_video->NT10_Extension;
 									$array = array('mp4','webm','ogg');
 									if (in_array($video_extension, $array))
 										echo "";
@@ -136,14 +136,8 @@
 								  {
 								  ?>
 								  <div class="vdo">
-								  <?php foreach ($query4 as $item4){;
-									$voice = $item4->url;
-									/*$video_extension = $item3->NT10_Extension;
-									$array = array('mp4','webm','ogg');
-									if (in_array($video_extension, $array))
-										echo "";
-									else
-										echo "ไม่สนับสนุนรูปแบบไฟล์"*/
+								  <?php foreach ($get_voice as $item_voice){;
+									$voice = $item_voice->url;
 								  ?>
 								  <audio width="482" height="270" controls>
 									<source src="<?php echo $voice;?>" type="audio/mpeg">
@@ -157,8 +151,8 @@
 								  {
 								  ?>
                                   <div class="image-list">
-								  <?php foreach ($query2 as $item2){;
-									$img = $item2->url;
+								  <?php foreach ($get_picture as $item_picture){;
+									$img = $item_picture->url;
 								  ?>
 									<a class="fancybox" href="<?php echo $img ?>" data-fancybox-group="gallery" title=""><img src="<?php echo $img ?>" alt="" / style="width:30%;margin-top:10px;"></a>
 								  <?php }?>
@@ -169,10 +163,10 @@
 								  {
 								  ?>
 								  <div class="vdo">
-								  <?php foreach ($query5 as $item5){;
-									$other = $item5->url;
+								  <?php foreach ($get_other as $item_other){;
+									$other = $item_other->url;
 								  ?>
-								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;"><a href="<?php echo $other ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download><?php echo $item5->NT13_FileName ?>&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
+								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;"><a href="<?php echo $other ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download><?php echo $item_other->NT13_FileName ?>&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
 								  <?php }?>
                                   </div>
 								  <?php }?>
@@ -186,32 +180,8 @@
                               <div class="<?php echo $col;?>" >
                                 <div id="detail">
                                     <h1><?php echo $title;?></h1>
-                                    <p><?php echo $d.".".$m.".".$y;?>  |  (<?php echo $views;?> ผู้เข้าชม )</p>
+                                    <p><?php echo $d.".".$m.".".$y;?>  |  (<?php echo $count_newsid->total;?> ผู้เข้าชม )</p>
                                     <p><?php echo $detail?></p>
-									<!--<p>นายกรัฐมนตรี ย้ำผู้ว่าราชการจังหวัดทั่วประเทศในแนวทางแก้ปัญหาภัยแล้ง ภัยหนาว และอุบัติเหตุใน
-                                          ช่วงปีใหม่ โดยให้ทุกฝ่ายที่เกี่ยวข้องบูรณาการร่วมกันพร้อมเน้นในการจัดทำยุทธศาสตร์จังหวัดให้ต่อ
-                                          เนื่องสอดคล้องกับภัยพิบัติต่างๆ ในพื้นที่
-                                    </p>
-                                    <p>
-                                          นางสาวยิ่งลักษณ์ ชินวัตร นายกรัฐมนตรีและรัฐมนตรีว่าการกระทรวงกลาโหม เป็นประธานประชุมติด
-                                          ตามแก้ปัญหาความเดือดร้อนของประชาชนในภาคตะวันออกเฉียงเหนือ ร่วมกับผู้ว่าราชการจังหวัดทั้ง 
-                                          20 จังหวัดและ 11 กระทรวงที่เกี่ยวข้อง ที่ศาลากลางจังหวัดร้อยเอ็ด เพื่อเตรียมความพร้อมป้องกัน 
-                                          แก้ไขปัญหาและให้การช่วยเหลือผู้ประสบภัยทั้งภัยหนาว ภัยแล้งและอุบัติเหตุในช่วงเทศกาลปีใหม่ 
-                                          โดยประชุมผ่านระบบวีดีโอคอนเฟอร์เร้นซ์กับผู้ว่าราชการทั่วประเทศ
-                                    </p>
-                                    <p>
-                                          นายกรัฐมนตรี ได้เน้นย้ำให้ป้องกันและบรรเทาสาธารณภัยจังหวัดและหน่วยงานที่เกี่ยวข้องบริหารจัด
-                                          การภัยพิบัติในรูปแบบ Single Command Center นำหลัก 2 พี 2 อาร์ มาปฏิบัติโดยกำหนดมาตรการ
-                                          รองรับและแก้ไขปัญหาให้สอดคล้องกับสภาพความเสี่ยง ระดับความรุนแรงในพื้นที่ พร้อมเร่งช่วยเหลือ
-                                          ผู้ประสบภัยให้รวดเร็วทั่วถึง ครอบคลุมในทุกพื้นที่ โดยเฉพาะพื้นที่ห่างไกล ขณะที่เรื่องอุบัติเหตุช่วงปี
-                                          ใหม่ขอให้ทุกฝ่ายช่วยกันป้องกันและรณรงค์ ซึ่งเป็นสิ่งที่รัฐบาลอยากเห็นการลดอุบัติเหตุและสูญเสีย
-                                          ให้น้อยลงในทุกๆปี
-                                    </p>
-                                    <p>
-                                          นอกจากนี้ นายกรัฐมนตรี ย้ำผู้ว่าราชการจังหวัดทุกจังหวัด ในการจัดทำยุทธศาสตร์จังหวัดให้ต่อเนื่อง 
-                                          สอดคล้องกับภัยพิบัติต่างๆ ในพื้นที่ และให้วางแผนล่วงหน้าก่อนที่จะเกิดภัยพิบัติขึ้น โดยประเมินจาก
-                                          ประสบการณ์ที่ผ่านมาในอดีต
-                                    </p>-->
                                 </div>
                                 <div class="news-form">
                                     <h1 style="margin-bottom: 5px;">ข้อมูลข่าวและที่มา</h1>

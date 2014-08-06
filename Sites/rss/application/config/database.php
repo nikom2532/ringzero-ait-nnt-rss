@@ -48,9 +48,25 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '112.121.129.117';
+/*$db['default']['hostname'] = '112.121.129.117';
 $db['default']['username'] = 'sa';
 $db['default']['password'] = '!NNTDataCenter>>';
+$db['default']['database'] = 'NNT_DataCenter_2';
+$db['default']['dbdriver'] = 'sqlsrv';
+$db['default']['dbprefix'] = '';
+$db['default']['pconnect'] = TRUE;
+$db['default']['db_debug'] = TRUE;
+$db['default']['cache_on'] = FALSE;
+$db['default']['cachedir'] = '';
+$db['default']['char_set'] = 'utf8';
+$db['default']['dbcollat'] = 'utf8_general_ci';
+$db['default']['swap_pre'] = '';
+$db['default']['autoinit'] = TRUE;
+$db['default']['stricton'] = FALSE;*/
+
+$db['default']['hostname'] = '122.155.16.226';
+$db['default']['username'] = 'NNT-DB';
+$db['default']['password'] = '12345678';
 $db['default']['database'] = 'NNT_DataCenter_2';
 $db['default']['dbdriver'] = 'sqlsrv';
 $db['default']['dbprefix'] = '';

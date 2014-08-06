@@ -184,10 +184,10 @@ option{margin-left:10px;}
 }
 
 .odd p{
-    margin-top: 20px;
+    margin: 20px 0;
 }
 .event p{
-    margin-top: 20px;
+    margin: 20px 0;
 }
 .welcome{
     margin: 5% 0 3%;
@@ -217,7 +217,7 @@ option{margin-left:10px;}
     position: absolute;
     left: 5px;
     top: 8px;
-    width: 176px;
+    /*width: 176px;*/
     height: 18px;
 }
 

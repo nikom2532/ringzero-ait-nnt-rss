@@ -12,11 +12,12 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../favicon.ico"> 
+    <link rel="shortcut icon" href="<?php echo image_asset_url('favicon.ico')?>">  
 
 	<?php echo css_asset('reset.css'); ?>
 	<?php echo css_asset('style.css'); ?>
 	<?php echo js_asset('jquery-1.8.3.min.js'); ?>
+
 </head>
 <body>
     <div class="container">
@@ -45,7 +46,7 @@
 						<input class="txt-field" type="password" value="" name="password"  placeholder="Password" style="width: 60%" id="password">
 					  </li>
 					  <li style="margin-top:40px;text-align:center;">
-						<input class="bt" type="button" value="Login" name="submit" style="width:18%;padding: 4px;" id="login">
+						<input class="bt" type="button" value="Login" name="submit" style="width:18%;padding:4px;cursor:pointer;" id="login">
 					  </li>
 					</ul> 
                 </div>
@@ -55,10 +56,17 @@
 </body>
 <script type="text/javascript">
 $(function(){
-	 $("#login").click(function(){
-		 console.log('onclick');
-		 var post_url = "http://111.223.32.9/prdservice/api/authenticate";
-		 $.ajax({
+	$("#password,#username").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+                $('#login').focus().click();
+        }
+    });
+ 
+	$("#login").click(function(){
+		console.log('onclick');
+		var post_url = "http://111.223.32.9/prdservice/api/authenticate";
+		$.ajax({
 			type: 'POST',
 			url: 'http://111.223.32.9/prdservice/api/authenticate',
 			crossDomain: true,
@@ -69,11 +77,11 @@ $(function(){
 				var UserID = responseData.UserID;
 				var Authen = responseData.Authenticated;
 				var Username = responseData.UserName;
-				var redirectURL = '<?php echo base_url()?>index.php/rss/login';
+				var redirectURL = '<?php echo base_url()?>rss/login';
 				redirect(redirectURL,UserID,Authen,Username);
 			},
 			error: function (responseData) {
-				alert('POST failed.');
+				alert('ไม่สามารถติดต่อกับระบบได้');
 			}
 		});
 	 });
@@ -87,7 +95,7 @@ function redirect(page,value,authen,username)
 		success:function(rs){
 			if(rs == 'Success')
 			{
-				window.location="<?php echo base_url();?>index.php/rss/sharing";
+				window.location="<?php echo base_url();?>rss/sharing";
 			}
 			else
 			{

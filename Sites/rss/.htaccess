@@ -1,0 +1,21 @@
+# Turn on URL rewriting
+RewriteEngine on
+
+# Put your installation directory here:
+RewriteBase /rss/
+
+#php_value max_execution_time 3600
+php_value date.timezone "Asia/Bangkok"
+
+RewriteCond %{REQUEST_URI} ^system.*
+RewriteRule ^(.*)$ /index.php/$1 [PT,L]
+
+# Rewrite all other URLs to index.php/URL
+RewriteCond $1 !^(index\.php|robots\.txt|favicon\.ico)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [PT,L]
+
+# No rewriting
+RewriteCond $1 ^(asset|uploads|)
+#RewriteRule ^(.*)$ - [PT,L]
