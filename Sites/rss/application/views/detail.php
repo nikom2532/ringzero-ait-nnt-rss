@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="<?php echo image_asset_url('favicon.ico')?>"> 
 
-  <?php echo css_asset('reset.css'); ?>
+    <?php echo css_asset('reset.css'); ?>
 	<?php echo css_asset('style.css'); ?>
 	<!-- Add jQuery library -->
 	<script type="text/javascript" src="<?php echo other_asset_url('lib/jquery-1.10.1.min.js') ;?>"></script>
@@ -113,22 +113,42 @@
                                   <div class="vdo">
 								  <?php foreach ($get_video as $item_video){;
 									$video = $item_video->url;
-									$video_extension = $item_video->NT10_Extension;
+									if (strlen($video) > 115)
+									{
+										$video_name = substr($video,-40,-4);
+										$video_date = substr($video,-51,-41)."/Mobile/";
+									}
+									else
+									{
+										$video_name = substr($video,-24,-4);
+										$video_date = substr($video,-35,-25)."/Mobile/";
+									}
+									/*$video_extension = $item_video->NT10_Extension;
 									$array = array('mp4','webm','ogg');
 									if (in_array($video_extension, $array))
 										echo "";
 									else
-										echo "ไม่สนับสนุนรูปแบบไฟล์"
+										echo "ไม่สนับสนุนรูปแบบไฟล์";*/
 								  ?>
-								  <div class="flowplayer" data-swf="<?php echo other_asset_url('skin/flowplayer.swf'); ?>" data-ratio="0.4167">
-								  <video width="482" height="270" controls>
-									<source src="<?php echo $video;?>" type="video/mp4">
-									<source src="<?php echo $video;?>" type="video/ogv">
-									<source src="<?php echo $video;?>" type="video/webm">
-								  </video>
+								  <br/><br/>
+								  <!-- <div class="flowplayer" data-swf="<?php echo other_asset_url('skin/flowplayer.swf'); ?>" data-ratio="0.4167"> -->
+
+								  <!-- <video width="482" height="270" controls> -->
+									<!--<source src="<?php echo $path.$video_date.$video_name.$type;?>" type="video/mp4"> -->
+									<!-- <source src="<?php echo $video;?>" type="video/ogv"> -->
+									<!-- <source src="<?php echo $video;?>" type="video/webm"> -->
+								  <!-- </video> -->
+								  <!-- </div> -->
+
+								  <div class="video_player" style="margin-bottom: 20px; ">
+									<div class="flowplayer" style="width: 461px; height: 358px;">
+										<video src="<?php echo $path.$video_date.$video_name.$type;?>" type="video/mp4"></video>
+									</div>
 								  </div>
-								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;color:#868686;"><a href="<?php echo $video ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download>Download Video&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
-								  <?php }?>
+								  <?php if ($user_id != ""){;?>
+								  <!--<p style="width: 100%;float: left;margin-top: 10px;text-align: right;color:#868686;"><a id="button_video" href="<?php echo $video ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download>Download Video&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>-->
+								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;color:#868686;"><a href="<?php echo base_url() ;?>download/download_video?file=<?php echo $video;?>&newsid=<?php echo $id ;?>" style="text-decoration:none;text-decoration:none;color:#868686;">Download Video&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
+								  <?php }}?>
                                   </div>
 								  <?php 
 								  }
@@ -142,8 +162,10 @@
 								  <audio width="482" height="270" controls>
 									<source src="<?php echo $voice;?>" type="audio/mpeg">
 								  </audio>
-								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;color:#868686;"><a href="<?php echo $video ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download>Download Audio&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
-								  <?php }?>
+								  <?php if ($user_id != ""){;?>
+								  <!--<p style="width: 100%;float: left;margin-top: 10px;text-align: right;color:#868686;"><a href="<?php echo $voice ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download>Download Audio&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>-->
+								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;color:#868686;"><a href="<?php echo base_url() ;?>download/download_audio?file=<?php echo $voice;?>&newsid=<?php echo $id ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download>Download Audio&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
+								  <?php }}?>
                                   </div>
 								  <?php 
 								  }
@@ -166,8 +188,10 @@
 								  <?php foreach ($get_other as $item_other){;
 									$other = $item_other->url;
 								  ?>
-								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;"><a href="<?php echo $other ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download><?php echo $item_other->NT13_FileName ?>&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
-								  <?php }?>
+								  <?php if ($user_id != ""){;?>
+								  <!--<p style="width: 100%;float: left;margin-top: 10px;text-align: right;"><a href="<?php echo $other ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download><?php echo $item_other->NT13_FileName ?>&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>-->
+								  <p style="width: 100%;float: left;margin-top: 10px;text-align: right;"><a href="<?php echo base_url() ;?>download/download_otherfile?file=<?php echo $other;?>&newsid=<?php echo $id ;?>" style="text-decoration:none;text-decoration:none;color:#868686;" download><?php echo $item_other->NT13_FileName ?>&nbsp;&nbsp;<img src="<?php echo image_asset_url('download.png')?>"></a></p>
+								  <?php }}?>
                                   </div>
 								  <?php }?>
                               </div>
@@ -192,7 +216,6 @@
                                 </div>
                               </div>
                            </div>
-
                  <?php } ?>   
                 </div>
 

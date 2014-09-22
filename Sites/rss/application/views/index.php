@@ -9,16 +9,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><!--   -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RSS FEEDS</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="<?php echo image_asset_url('favicon.ico')?>">  
+
+    <link rel="shortcut icon" href="<?php echo image_asset_url('favicon.ico')?>"> 
 
 	<?php echo css_asset('reset.css'); ?>
 	<?php echo css_asset('style.css'); ?>
 	<?php echo js_asset('jquery-1.8.3.min.js'); ?>
 
 </head>
+<form action="<?php echo base_url();?>rss/signin" method="post">
 <body>
     <div class="container">
     <!-- HEADER -->
@@ -37,7 +36,7 @@
                 <div id="login-form">
 					<ul>
 					  <li style="text-align:center;">
-						<p id="error" style="color: red; margin-bottom: 10px; font-size: large; display: none;font-family:supermarketregular">ไม่พบข้อมูลผู้ใช้งาน</p>
+						<p id="" style="color: red; margin-bottom: 10px; font-size: large;font-family:supermarketregular"><?php echo $status;?></p>
 					  </li>
 					  <li style="text-align:center;">
 						<input class="txt-field" type="text" value="" name="username"  placeholder="Username" style="width: 60%" id="username">
@@ -46,7 +45,7 @@
 						<input class="txt-field" type="password" value="" name="password"  placeholder="Password" style="width: 60%" id="password">
 					  </li>
 					  <li style="margin-top:40px;text-align:center;">
-						<input class="bt" type="button" value="Login" name="submit" style="width:18%;padding:4px;cursor:pointer;" id="login">
+						<input class="bt" type="submit" value="Login" name="submit" style="width:18%;padding:4px;cursor:pointer;" id="login">
 					  </li>
 					</ul> 
                 </div>
@@ -54,56 +53,4 @@
         </div>
     </div>
 </body>
-<script type="text/javascript">
-$(function(){
-	$("#password,#username").keypress(function(event) {
-        if (event.which == 13) {
-            event.preventDefault();
-                $('#login').focus().click();
-        }
-    });
- 
-	$("#login").click(function(){
-		console.log('onclick');
-		var post_url = "http://111.223.32.9/prdservice/api/authenticate";
-		$.ajax({
-			type: 'POST',
-			url: 'http://111.223.32.9/prdservice/api/authenticate',
-			crossDomain: true,
-			data: { username:$("#username").val(), password:$("#password").val() },
-			dataType: 'json',
-			success: function(responseData) {
-				console.log(responseData);
-				var UserID = responseData.UserID;
-				var Authen = responseData.Authenticated;
-				var Username = responseData.UserName;
-				var redirectURL = '<?php echo base_url()?>rss/login';
-				redirect(redirectURL,UserID,Authen,Username);
-			},
-			error: function (responseData) {
-				alert('ไม่สามารถติดต่อกับระบบได้');
-			}
-		});
-	 });
-});
-function redirect(page,value,authen,username)
-{
-	$.ajax({
-		type: 'POST',
-		url: page,
-		data: {UserId: value , Authenticated: authen , Username: username},
-		success:function(rs){
-			if(rs == 'Success')
-			{
-				window.location="<?php echo base_url();?>rss/sharing";
-			}
-			else
-			{
-				//alert(rs);
-				$("#error").show();
-			}
-		}
-	});
-}
-</script>
 </html>

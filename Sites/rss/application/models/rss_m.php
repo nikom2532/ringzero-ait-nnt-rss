@@ -160,7 +160,7 @@ class Rss_m extends CI_model
 		SELECT DISTINCT * FROM row WHERE RowNumber BETWEEN $bet AND $page ;";
 		return $this->db->query($query); 
 	}
-	public function search_news_update($page,$seg,$sea,$ssd,$esd,$ty,$sty,$di,$ui,$mty)
+	public function search_news_update($page,$seg,$sea,$ssd,$esd = NULL,$ty,$sty,$di,$ui,$mty)
 	{
 		/*echo "MoreID : ".$mty."<br/>";
 		echo "UserID : ".$ui."<br>";
@@ -169,9 +169,9 @@ class Rss_m extends CI_model
 		echo "TypeID : ".$ty."<br>";
 		echo "StartDate : ".$ssd."<br>";
 		echo "EndDate : ".$esd."<br>";
-		echo "Keyword : ".$sea."<br>";
+		echo "Keyword : ".$sea."<br>";*/
 		$sd = date("Y-m-d",strtotime($ssd))." 00:00:00.000";
-		$ed = date("Y-m-d",strtotime($esd))." 23:59:59.999";*/
+		$ed = date("Y-m-d",strtotime($esd))." 23:59:59.999";
 		if($page == "" || $page == NULL)
 		{
 			$page = 20;
@@ -453,7 +453,7 @@ class Rss_m extends CI_model
 			return $this->db->query($query);
 		}
 	}
-	public function count_search_news_update($sea,$ssd,$esd,$ty,$sty,$di,$ui,$mty)
+	public function count_search_news_update($sea,$ssd,$esd = NULL,$ty,$sty,$di,$ui,$mty)
 	{
 		$sd = date("Y-m-d",strtotime($ssd))." 00:00:00.000";
 		$ed = date("Y-m-d",strtotime($esd))." 23:59:59.999";
@@ -707,7 +707,7 @@ class Rss_m extends CI_model
 			return $this->db->query($query);
 		}
 	}
-	public function generate_rss_update($sea,$ssd,$esd,$ty,$sty,$di,$ui,$vdo,$voice,$pic,$other,$userid,$mty)
+	public function generate_rss_update($sea,$ssd,$esd = NULL,$ty,$sty,$di,$ui,$vdo,$voice,$pic,$other,$userid,$mty)
 	{
 		$sd = date("Y-m-d",strtotime($ssd))." 00:00:00.000";
 		$ed = date("Y-m-d",strtotime($esd))." 23:59:59.999";

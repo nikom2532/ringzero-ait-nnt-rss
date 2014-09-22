@@ -1,20 +1,20 @@
 <?php
-	header("Content-Type: application/rss+xml; charset=UTF-8");
+	header("Content-Type: application/xml; charset=UTF-8");
 	$text_rss = "";
 	$img = "";
-	$i=0;
-	$j=0;
-	$k=0;
+	$i=0; 	//set values of array
+	$j=0;	//set items of array
+	$k=0;	//set picture items of array
 	if (is_array($title))
 	{
 		foreach($title as $item_title)
 		{	
-			$t[$i] = $item_title[0]->Title;
-			$u[$i] = $item_title[0]->Date;
-			$v[$i] = $item_title[0]->Detail;
-			$w[$i] = $item_title[0]->Rewrite;
-			$x[$i] = $item_title[0]->Reporter;
-			$y[$i] = $item_title[0]->Department;
+			$t[$i] = $item_title[0]->Title;	//set title news array
+			$u[$i] = $item_title[0]->Date;	//set date news array
+			$v[$i] = $item_title[0]->Detail;	//set detail news array
+			$w[$i] = $item_title[0]->Rewrite;	//set rewrite news array
+			$x[$i] = $item_title[0]->Reporter;	//set reporter news array
+			$y[$i] = $item_title[0]->Department;	//set department news array
 
 			$i++;
 		}
@@ -45,7 +45,7 @@
 		$first_rss .= '<title>NNT NEWS</title>';
 		$first_rss .= '<link>'.base_url().'rss/view_rss/'.$item->Main_RssID.'</link>';
 		$first_rss .= '<description src="http://localhost:8080/rss/rss/assets/images/RSS_Logo.png">NNT News Feed</description>';
-		$first_rss .= '<a10:id>NNT News Feed</a10:id>';
+		$first_rss .= '<a10:id>NNT NEWS FEED</a10:id>';
 
 		$text_rss .= '<item>';
 		$text_rss .= '<guid isPermaLink="false">'.$item->Detail_NewsID;
@@ -66,16 +66,26 @@
 		$text_rss .= '<a10:updated>'.date("c",strtotime($u[$j]));
 		$text_rss .= '</a10:updated>';
 
+		$text_rss .= '<enclosure type="image/jpeg" url="'.$img[$j].'"></enclosure>';
+		$text_rss .= '<image>
+					     <url>'.$img[$j].'</url>
+					     <title>NNT NEWS</title>
+					     <link>http://thainews.prd.go.th</link>
+					   </image>';
+
 		$text_rss .= '<pubDate>'.date('c');
 		$text_rss .= '</pubDate>';
 		$text_rss .= '<updated>'.date('c');
 		$text_rss .= '</updated>';
 		$text_rss .= '</item>';
 
-		$last_rss = '</channel>';
+		$last_rss = '</channel>';	
 		$last_rss .= '</rss>';
 		$j++;
 	}
 	echo $rss_file = $first_rss.$text_rss.$last_rss;
+	$f = fopen( 'rss.xml' , 'w' ); //ส่วนของการสร้างไฟล์ XML 
+	fputs( $f , $rss_file );
+	fclose( $f );
 ?>
 	

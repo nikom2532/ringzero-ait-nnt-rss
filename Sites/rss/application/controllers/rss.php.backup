@@ -7,7 +7,6 @@ class Rss extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->library('curl');
-		$this->load->database();
         
     }
 
@@ -19,6 +18,7 @@ class Rss extends CI_Controller {
 
 	public function sharing()
 	{
+		$this->load->database();
 		$this->load->model('rss_m');
 		$this->load->library('pagination');
 
@@ -101,11 +101,6 @@ class Rss extends CI_Controller {
 	{
 		$this->load->model('rss_m');
 		$id = $this->input->get('id');
-		$data['user_id'] = $this->session->userdata('user_id');
-		if($data['user_id'] != "")
-			$data['user_id'] = $this->session->userdata('user_id');
-		else
-			$data['user_id'] = "";
 		$data['detail'] = $this->rss_m->get_detail($id);
 		$data['get_picture'] = $this->rss_m->get_pic($id);
 		$data['get_video'] = $this->rss_m->get_video($id);
@@ -114,8 +109,6 @@ class Rss extends CI_Controller {
 		$data['status'] = $this->rss_m->get_status($id);
 		$this->rss_m->insert_count($id);
 		$data['count_newsid'] = $this->rss_m->news_count($id);
-		$data['path'] = "http://61.19.244.31/centerapp/UploadFiles/Video/";
-		$data['type'] = ".mp4";
 		$this->load->view('detail',$data);
 	}
 	public function view_rss()
@@ -158,15 +151,14 @@ class Rss extends CI_Controller {
 		}
 		$this->load->view('xml_default',$data);
 	}
-	public function signin()
+	/*public function login()
 	{
 		$this->load->model('rss_m');
-		$url = "http://111.223.32.9/prdservice/api/authenticate";
 		$post = array(
 					'username' => $this->input->post('username'), 
 					'password' => $this->input->post('password'), 
 				);
-		$authen_source = $this->curl->simple_post($url, $post, array(CURLOPT_BUFFERSIZE => 10));
+		$authen_source = $this->curl->simple_post('http://111.223.32.9/prdservice/api/authenticate', $post, array(CURLOPT_BUFFERSIZE => 10));
 		$authen_source = json_decode($authen_source);
 		$authen = $authen_source->Authenticated;
 		$user = $authen_source->UserID;
@@ -179,7 +171,7 @@ class Rss extends CI_Controller {
 			$user_id = $this->session->userdata('user_id');
 			$this->session->set_userdata('user_name',$username);
 			$this->rss_m->insertlog($user_id);
-			redirect(base_url().'rss/sharing', 'refresh');
+			redirect(base_url().index_page().'rss/sharing', 'refresh');
 			//header('location:sharing');
 		}
 		else
@@ -187,7 +179,7 @@ class Rss extends CI_Controller {
 			$data['status'] = "ไม่พบข้อมูลผู้ใช้งาน";
 			$this->load->view('index',$data);
 		}
-	}
+	}*/
 	public function login()
 	{
 		$this->load->model('rss_m');
@@ -220,29 +212,14 @@ class Rss extends CI_Controller {
 		$this->rss_m->updatelog($mainid);
 		header('location:index');
 	}
-
-	public function category()
+	public function test_login()
 	{
-		$this->load->model('service_m');
-		$data['news'] = $this->service_m->get_category($this->uri->segment(3));
-		$path = array();
-		$user = array();
-		foreach ($data['news'] as $newsid) 
-		{
-			array_push($path,$this->service_m->find_picture($newsid->NT01_NewsID));
-			array_push($user,$this->service_m->find_user($newsid->NT01_ReporterID));
-		}
-		$data['url'] = "http://thainews.prd.go.th/centerapp/Common/GetFile.aspx?FileUrl=";
-		$data['pictures'] = $path;
-		$data['users'] = $user;
-		$data['rewriter_name'] = "";
-		$data['reporter_name'] = "";
-		$data['title'] = "NNT NEWS";
-		$data['link'] = base_url()."rss/category/".$this->uri->segment(3);
-		$data['description'] = "NNT NEWS FEED";
-		$data['description_img'] = base_url()."asset/images/RSS_Logo.png";
-		$data['id'] = "NNT NEWS FEED";
-		$this->load->view('service',$data);
+		$this->load->view('test_login');
+	}
+	public function test_page()
+	{
+		echo base_url()."<br/>";
+		echo site_url();
 	}
 }
 
